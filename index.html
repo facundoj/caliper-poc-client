@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Student</title>
+
+        <link rel="stylesheet" charset="utf-8" href="bower_components/bootstrap/dist/css/bootstrap.css">
+
+        <!-- third party -->
+        <script src="bower_components/jquery/dist/jquery.js"></script>
+        <script src="bower_components/angular/angular.js"></script>
+        <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="../caliper-js/dist/caliperSensor-1.0.0.js"></script>
+
+        <!-- own -->
+        <script src="src/js/main.js"></script>
+        <script src="src/js/service/student.js"></script>
+        <script src="src/js/service/caliper-sensor.js"></script>
+        <script src="src/js/directive/fileread.js"></script>
+
+        <style>
+            .sep {
+                margin: 20px 0;
+            }
+        </style>
+
+    </head>
+    <body>
+        <section ng-app="pocApp">
+            <div ng-controller="ctrl as vm" class="container">
+                <div class="container header">
+                    <h1>Student Emulator</h1>
+                </div>
+
+                <div class="container students">
+                    <div ng-repeat="student in vm.students" class="sep">
+
+                        <!-- Load events -->
+                        <form ng-if="!student.isReady" class="form-inline">
+
+                            <!-- ID -->
+                            <div class="form-group col-md-4">
+                                <input type="text"
+                                    ng-model="student.id"
+                                    class="form-control"
+                                    placeholder="Student ID">
+                            </div>
+
+                            <!-- Events file -->
+                            <div class="form-group col-md-4">
+                                <label for="{{'student-file-' + $index}}">Events File</label>
+                                <input type="file" id="{{'student-file-' + $index}}" fileread="file">
+                            </div>
+
+                            <button class="btn btn-primary col-md-4" ng-click="vm.loadEvents(student, file.name)">Load</button>
+                        </form>
+
+                        <!-- Is ready -->
+                        <div ng-if="student.isReady">
+                            <h3>Student: {{student.id}}</h3>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">Events</div>
+                                <div class="panel-body">
+                                    <ul>
+                                        <li ng-repeat="event in student.events">
+                                            <span>{{event.getInfo()}}</span>
+                                            <span>{{event.isCompleted ? ' (Done #' + event.order + ')' : ' (Waiting)'}}</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" ng-click="vm.start(student)" ng-if="!student.hasStarted">Start</button>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="container sep">
+                    <button class="btn btn-primary" ng-click="vm.addStudent()">Add student</button>
+                </div>
+            </div>
+        </section>
+    </body>
+</html>

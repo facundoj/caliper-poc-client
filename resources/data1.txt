@@ -1,5 +1,22 @@
-AssessmentEvent
-storage/poc-app/1;POC application
---
-AssessmentEvent
-storage/poc-app/2;POC application 2
+[
+  {
+    "type": "AssessmentEvent",
+    "values": {
+      "action": "STARTED",
+      "object": {
+        "id": "assesment-01",
+        "name": "The Assessment 01"
+      }
+    }
+  },
+  {
+    "type": "AssessmentEvent",
+    "values": {
+      "action": "SUBMITTED",
+      "object": {
+        "id": "assesment-01",
+        "name": "The Assessment 01"
+      }
+    }
+  }
+]

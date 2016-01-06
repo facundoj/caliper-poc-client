@@ -31,23 +31,43 @@ angular
 
             if (handler instanceof Function) {
                 // Delagating tracking to particular events
-                handler(student, event);
+                return handler(student, event);
             }
         }
 
         function trackAssessmentEvent(student, event) {
-            // Current app
-            var edApp = new Caliper.Entities.SoftwareApplication(event.softwareApplication);
-            edApp.setName(event.name);
+            // Object
+            var edApp = new Caliper.Entities.Assessment(event.details.id);
+            edApp.setName(event.details.name);
 
-            // Student actor
-            var student = new Caliper.Entities.Person('storage/student/' + student.id);
+            // Actor
+            var actor = new Caliper.Entities.Person(student.id);
+
+            // Generatable
+            var attempt;
+            switch (event.details.action) {
+                case 'STARTED':
+                    // Fat / Skinny
+                    attempt = new Caliper.Entities.Attempt();
+                    attempt.setId(event.details.generated.id);
+                    attempt.setCount(event.details.generated.count);
+                    attempt.setStartedAtTime(new Date());
+                    // Caching attempt
+                    student.currentAttempt = attempt;
+                    break;
+
+                case 'SUBMITTED':
+                    attempt = student.currentAttempt;
+                    attempt.setEndedAtTime(new Date());
+                    break;
+            }
 
             // Creating Assesment Event
             var assessmentEvent = new Caliper.Events.AssessmentEvent();
-            assessmentEvent.setActor(student);
-            assessmentEvent.setAction(Caliper.Actions.AssessmentActions.STARTED);
+            assessmentEvent.setActor(actor);
+            assessmentEvent.setAction(Caliper.Actions.AssessmentActions[event.details.action]);
             assessmentEvent.setObject(edApp);
+            assessmentEvent.setGenerated(attempt);
             assessmentEvent.setEventTime(new Date());
 
             // Execute call

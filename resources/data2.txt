@@ -1,5 +1,63 @@
-AssessmentEvent
-storage/poc-app/3;POC application 3
---
-AssessmentEvent
-storage/poc-app/1;POC application
+[
+  {
+    "type": "AssessmentEvent",
+    "values": {
+      "action": "STARTED",
+      "object": {
+        "id": "assesment-##",
+        "name": "The Assessment ##",
+        "version": "1.0"
+      },
+      "generated": {
+        "id": "attempt-##",
+        "count": 1
+      }
+    }
+  },
+
+  {
+    "type": "AssessmentItemEvent",
+    "values": {
+      "action": "COMPLETED",
+      "object": {
+        "id": "assessment-item-01"
+      },
+      "generated": {
+        "type": "[FILLINBLANK|MULTIPLECHOICE|MULTIPLERESPONSE|SELECTTEXT|TRUEFALSE]",
+        "value": "<hardcoded-response>"
+      },
+      "duration": "<?>",
+      "startedAt": "<dynamic>",
+      "endedAt": "<dynamic>",
+      "isPartOf": "<dynamic>"
+    }
+  },
+
+  {
+    "type": "AssessmentEvent",
+    "values": {
+      "action": "SUBMITTED",
+      "object": {
+        "id": "assesment-##",
+        "name": "The Assessment ##"
+      }
+    }
+  },
+
+  {
+    "type": "OutcomeEvent",
+    "values": {
+      "action": "GRADED",
+      "target": {
+        "id": "assesment-##"
+      },
+      "object": {
+        "id": "attempt-##"
+      },
+      "generated": {
+        "normalScore": 70,
+        "totalScore": 100
+      }
+    }
+  }
+]

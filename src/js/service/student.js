@@ -63,14 +63,13 @@ function Student() {
 }
 
 Student.prototype.loadEvents = function (events) {
-    var self = this,
-        // Events separated by "--"
-        eventsArray = events.trim().split('--');
+    var self = this;
 
-    self.events = []
+    self.events = [];
+    self.eventsRegistry = {};
 
-    eventsArray.forEach(function(eventData) {
-        self.events.push(new Event(eventData.trim()));
+    events.forEach(function (eventData) {
+        self.events.push(new Event(eventData));
     });
 
     self.isReady = true;
@@ -79,7 +78,7 @@ Student.prototype.loadEvents = function (events) {
 Student.prototype.executeEvent = function(i, caliperSensor) {
     console.log('Executing:', this, this.events[i]);
     // Caliper Sensor - Event tracking
-    caliperSensor.track(this, this.events[i]);
+    var generated = caliperSensor.track(this, this.events[i]);
     this.events[i].isCompleted = true;
 };
 
@@ -89,24 +88,28 @@ function Event(data) {
         return new Event(data);
     }
 
-    var dataArray = data.trim().split('\n'),
-        eventDetails,
-        self = this;
+    var self = this;
 
-    switch (dataArray[0]) {
+    switch (data.type) {
         case 'AssessmentEvent':
-            /**
-             * Event structure:
-             * AssessmentEvent
-             * {{softwareApplication}};{{name}}
-             */
-            eventDetails = dataArray[1].trim().split(';');
-
             self.type = 'AssessmentEvent';
-            self.softwareApplication = eventDetails[0].trim();
-            self.name = eventDetails[1].trim();
+            self.details = data.values;
 
             self.getInfo = self.getAssessmentEventInfo;
+            break;
+
+        case 'AssessmentItemEvent':
+            self.type = 'AssessmentItemEvent';
+            self.details = data.values;
+
+            self.getInfo = self.getAssessmentItemEventInfo;
+            break;
+
+        case 'OutcomeEvent':
+            self.type = 'OutcomeEvent';
+            self.details = data.values;
+
+            self.getInfo = self.getOutcomeEventInfo;
             break;
     }
 
@@ -115,7 +118,22 @@ function Event(data) {
 
 Event.prototype.getAssessmentEventInfo = function() {
     return 'AssessmentEvent (' +
-        'Name: ' + this.name + ' ' +
-        'Application: ' + this.softwareApplication +
+        'Action: ' + this.details.action + ' - ' +
+        'Assesment: ' + this.details.object.id + ' - ' +
+        'Attempt: ' + this.details.generated.id +
         ')';
-}
+};
+
+Event.prototype.getAssessmentItemEventInfo = function() {
+    return 'AssessmentItemEvent (' +
+        'Action: ' + this.details.action + ' - ' +
+        'Response: ' + this.details.generated.type +
+    ')';
+};
+
+Event.prototype.getOutcomeEventInfo = function() {
+    return 'OutcomeEvent (' +
+        'Action: ' + this.details.action + ' - ' +
+        'Score: ' + this.details.generated.normalScore + '/' + this.details.generated.totalScore +
+    ')';
+};

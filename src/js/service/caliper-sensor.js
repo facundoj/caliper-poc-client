@@ -6,7 +6,9 @@ angular
         var sensor = Caliper.Sensor,
             // Sensor mapper
             trackingMap = {
-                'AssessmentEvent': trackAssessmentEvent
+                'AssessmentEvent': trackAssessmentEvent,
+                'AssessmentItemEvent': trackAssessmentItemEvent,
+                'OutcomeEvent': trackOutcomeEvent
             };
 
         // Pointing to Event Store
@@ -37,8 +39,9 @@ angular
 
         function trackAssessmentEvent(student, event) {
             // Object
-            var edApp = new Caliper.Entities.Assessment(event.details.id);
-            edApp.setName(event.details.name);
+            var edApp = new Caliper.Entities.Assessment(event.details.object.id);
+            edApp.setName(event.details.object.name);
+            edApp.setVersion(event.details.object.version);
 
             // Actor
             var actor = new Caliper.Entities.Person(student.id);
@@ -72,6 +75,45 @@ angular
 
             // Execute call
             sensor.send(assessmentEvent);
+        }
+
+        function trackAssessmentItemEvent(student, event) {
+            // Actor
+            var actor = new Caliper.Entities.Person(student.id);
+
+            // Object
+            var object = new Caliper.Entities.AssessmentItem(event.details.object.id);
+
+            // Generatable
+            var generated = new Caliper.Entities.Response(event.details.generated.id);
+            generated.setType(Caliper.Entities.ResponseType[event.details.generated.type]);
+            generated.setAttempt(student.currentAttempt);
+            generated.setStartedAtTime(new Date());
+            generated.setEndedAtTime(new Date());
+            generated.setDuration(100);
+
+            // Event
+            var assessmentItemEvent = new Caliper.Events.AssessmentItemEvent();
+            assessmentItemEvent.setAction(Caliper.Actions.AssessmentItemActions[event.details.action]);
+            assessmentItemEvent.setActor(actor);
+            assessmentItemEvent.setObject(object);
+        }
+
+        function trackOutcomeEvent(student, event) {
+            // Actor
+            var actor = new Caliper.Entities.Person(student.id);
+
+            // Generatable
+            var generated = new Caliper.Entities.Result(event.details.generated.id);
+            generated.setNormalScore(event.details.generated.normalScore);
+            generated.setTotalScore(event.details.generated.setTotalScore);
+
+            // Event
+            var outcomeEvent = new Caliper.Events.OutcomeEvent();
+            outcomeEvent.setObject(student.currentAttempt);
+            outcomeEvent.setActor(actor);
+
+            student.currentAttempt = null;
         }
 
     });

@@ -4,12 +4,12 @@
     "values": {
       "action": "STARTED",
       "object": {
-        "id": "assesment-##",
-        "name": "The Assessment ##",
+        "id": "assesment-01",
+        "name": "The Assessment 01",
         "version": "1.0"
       },
       "generated": {
-        "id": "attempt-##",
+        "id": "attempt-02",
         "count": 1
       }
     }
@@ -23,12 +23,9 @@
         "id": "assessment-item-01"
       },
       "generated": {
-        "type": "[FILLINBLANK|MULTIPLECHOICE|MULTIPLERESPONSE|SELECTTEXT|TRUEFALSE]",
-        "value": "<hardcoded-response>"
+        "id": "response-55",
+        "type": "FILLINBLANK"
       },
-      "duration": "<?>",
-      "startedAt": "<dynamic>",
-      "endedAt": "<dynamic>",
       "isPartOf": "<dynamic>"
     }
   },
@@ -38,8 +35,13 @@
     "values": {
       "action": "SUBMITTED",
       "object": {
-        "id": "assesment-##",
-        "name": "The Assessment ##"
+        "id": "assesment-01",
+        "name": "The Assessment 01",
+        "version": "1.0"
+      },
+      "generated": {
+        "id": "attempt-02",
+        "count": 1
       }
     }
   },
@@ -49,12 +51,13 @@
     "values": {
       "action": "GRADED",
       "target": {
-        "id": "assesment-##"
+        "id": "assesment-01"
       },
       "object": {
-        "id": "attempt-##"
+        "id": "attempt-02"
       },
       "generated": {
+        "id": "result-33",
         "normalScore": 70,
         "totalScore": 100
       }

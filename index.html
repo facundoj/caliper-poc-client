@@ -33,7 +33,7 @@
                 </div>
 
                 <div class="container students">
-                    <div ng-repeat="student in vm.students" class="sep">
+                    <div ng-repeat="student in vm.students" class="sep row">
 
                         <!-- Load events -->
                         <form ng-if="!student.isReady" class="form-inline">
@@ -77,6 +77,7 @@
 
                 <div class="container sep">
                     <button class="btn btn-primary" ng-click="vm.addStudent()">Add student</button>
+                    <button class="btn btn-success" ng-click="vm.startAll()" ng-if="vm.students.length > 0">Start All</button>
                 </div>
             </div>
         </section>

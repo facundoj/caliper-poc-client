@@ -61,10 +61,11 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading">Events</div>
                                 <div class="panel-body">
-                                    <ul>
-                                        <li ng-repeat="event in student.events">
+                                    <ul class="list-group">
+                                        <li class="list-group-item" ng-repeat="event in student.events">
                                             <span>{{event.getInfo()}}</span>
-                                            <span>{{event.isCompleted ? ' (Done #' + event.order + ')' : ' (Waiting)'}}</span>
+                                            <span class="label label-default" ng-if="!event.isCompleted">Waiting..</span>
+                                            <span class="label label-success" ng-if="event.isCompleted">Done! (#{{event.order}})</span>
                                         </li>
                                     </ul>
                                 </div>

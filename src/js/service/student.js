@@ -30,6 +30,7 @@ angular
         }
 
         function startEvents(student) {
+            if (student.hasStarted) return;
             console.log('Starting events for:', student);
             student.hasStarted = true;
             triggerNextEvent(student, 0);
@@ -45,7 +46,7 @@ angular
                     student.executeEvent(i, caliperSensor);
                     student.events[i].order = counter;
                     triggerNextEvent(student, i + 1)
-                }, Math.ceil(Math.random() * 5000 + 1000));
+                }, Math.ceil(Math.random() * 5000));
             }
         }
     });

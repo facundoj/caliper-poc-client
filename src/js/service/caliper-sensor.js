@@ -97,6 +97,8 @@ angular
             assessmentItemEvent.setAction(Caliper.Actions.AssessmentItemActions[event.details.action]);
             assessmentItemEvent.setActor(actor);
             assessmentItemEvent.setObject(object);
+
+            sensor.send(assessmentItemEvent);
         }
 
         function trackOutcomeEvent(student, event) {
@@ -114,6 +116,8 @@ angular
             outcomeEvent.setActor(actor);
 
             student.currentAttempt = null;
+
+            sensor.send(outcomeEvent);
         }
 
     });

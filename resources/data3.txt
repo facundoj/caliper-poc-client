@@ -1,0 +1,94 @@
+ [
+  {
+    "type": "AssessmentEvent",
+    "values": {
+      "action": "STARTED",
+      "object": {
+        "id": "assesment-01",
+        "name": "The Assessment 01",
+        "version": "1.0"
+      },
+      "generated": {
+        "id": "attempt-02",
+        "count": 1
+      }
+    }
+  },
+
+  {
+    "type": "AssessmentItemEvent",
+    "values": {
+      "action": "COMPLETED",
+      "object": {
+        "id": "assessment-item-01"
+      },
+      "generated": {
+        "id": "response-55",
+        "type": "FILLINBLANK"
+      },
+      "learningObjective": [
+          {
+            "id": "objective-01",
+            "name": "EQUATIONS"
+          },
+          {
+            "id": "objective-02",
+            "name": "ALGEBRA1"
+          }
+        ],
+      "isPartOf": "<dynamic>"
+    }
+  },
+
+  {
+    "type": "AssessmentEvent",
+    "values": {
+      "action": "SUBMITTED",
+      "object": {
+        "id": "assesment-01",
+        "name": "The Assessment 01",
+        "version": "1.0"
+      },
+      "generated": {
+        "id": "attempt-02",
+        "count": 1
+      }
+    }
+  },
+
+  {
+    "type": "OutcomeEvent",
+    "values": {
+      "action": "GRADED",
+      "target": {
+        "id": "assesment-01"
+      },
+      "object": {
+        "id": "attempt-02"
+      },
+      "generated": {
+        "id": "result-33",
+        "normalScore": 70,
+        "totalScore": 100
+      }
+    }
+  },
+  
+  {
+  "type": "OutcomeEvent",
+  "values": {
+    "action": "GRADED",
+    "target": {
+      "id": "assessment-item-01"
+    },
+    "object": {
+      "id": "attempt-02"
+    },
+    "generated": {
+      "id": "result-01",
+      "normalScore": 10,
+      "totalScore": 20
+    }
+  }
+}
+]

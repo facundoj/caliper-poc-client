@@ -13,8 +13,8 @@ angular
 
         // Pointing to Event Store
         sensor.initialize('POC-Sensor', {
-            host: '127.0.0.1',
-            port: '8888',
+            host: 'localhost', //'10.132.11.78',
+            port: '8888', //'3001',
             path: '/message',
             withCredentials: false
         });
@@ -55,6 +55,8 @@ angular
                     attempt.setId(event.details.generated.id);
                     attempt.setCount(event.details.generated.count);
                     attempt.setStartedAtTime(new Date());
+                    attempt.setAssignable(edApp);
+                    attempt.setActor(actor);
                     // Caching attempt
                     student.currentAttempt = attempt;
                     break;

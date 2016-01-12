@@ -88,6 +88,12 @@ angular
             var object = new Caliper.Entities.AssessmentItem(event.details.object.id);
             student.cache[event.details.object.id] = object;
 
+            var learningObjectives = [];
+            event.details.learningObjective.forEach(function(lo) {
+                learningObjectives.push(new Caliper.Entities.LearningObjective(lo.id));
+            });
+            object.setAlignedLearningObjective(learningObjectives);
+
             // Generatable
             var generated = new Caliper.Entities.Response(event.details.generated.id);
             generated.setType(Caliper.Entities.ResponseType[event.details.generated.type]);
@@ -118,6 +124,7 @@ angular
             var outcomeEvent = new Caliper.Events.OutcomeEvent();
             outcomeEvent.setObject(student.currentAttempt);
             outcomeEvent.setActor(actor);
+            outcomeEvent.setAction(Caliper.Actions.OutcomeActions[event.details.action]);
 
             if (student.cache[event.details.target.id]) {
                 outcomeEvent.setTarget(student.cache[event.details.target.id]);

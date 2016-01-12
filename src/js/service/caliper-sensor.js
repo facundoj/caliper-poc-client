@@ -66,6 +66,7 @@ angular
                     attempt.setEndedAtTime(new Date());
                     break;
             }
+            student.cache[event.details.generated.id] = attempt;
 
             // Creating Assesment Event
             var assessmentEvent = new Caliper.Events.AssessmentEvent();
@@ -85,6 +86,7 @@ angular
 
             // Object
             var object = new Caliper.Entities.AssessmentItem(event.details.object.id);
+            student.cache[event.details.object.id] = object;
 
             // Generatable
             var generated = new Caliper.Entities.Response(event.details.generated.id);
@@ -116,6 +118,10 @@ angular
             var outcomeEvent = new Caliper.Events.OutcomeEvent();
             outcomeEvent.setObject(student.currentAttempt);
             outcomeEvent.setActor(actor);
+
+            if (student.cache[event.details.target.id]) {
+                outcomeEvent.setTarget(student.cache[event.details.target.id]);
+            }
 
             student.currentAttempt = null;
 

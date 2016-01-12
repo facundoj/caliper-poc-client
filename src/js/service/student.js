@@ -61,6 +61,7 @@ function Student() {
 
     this.isReady = false;
     this.hasStarted = false;
+    this.cache = Object.create(null);
 }
 
 Student.prototype.loadEvents = function (events) {

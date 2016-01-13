@@ -101,6 +101,8 @@ angular
 
             // Generatable
             var generated = new Caliper.Entities.Response(event.details.generated.id);
+            generated.setActor(actor);
+            generated.setAssignable(object);
             generated.setType(Caliper.Entities.ResponseType[event.details.generated.type]);
             generated.setAttempt(student.currentAttempt);
             generated.setStartedAtTime(new Date());

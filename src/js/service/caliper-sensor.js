@@ -39,9 +39,9 @@ angular
 
         function trackAssessmentEvent(student, event) {
             // Object
-            var edApp = new Caliper.Entities.Assessment(event.details.object.id);
-            edApp.setName(event.details.object.name);
-            edApp.setVersion(event.details.object.version);
+            var object = new Caliper.Entities.Assessment(event.details.object.id);
+            object.setName(event.details.object.name);
+            object.setVersion(event.details.object.version);
 
             // Actor
             var actor = new Caliper.Entities.Person(student.id);
@@ -55,7 +55,7 @@ angular
                     attempt.setId(event.details.generated.id);
                     attempt.setCount(event.details.generated.count);
                     attempt.setStartedAtTime(new Date());
-                    attempt.setAssignable(edApp);
+                    attempt.setAssignable(object);
                     attempt.setActor(actor);
                     // Caching attempt
                     student.currentAttempt = attempt;
@@ -67,12 +67,13 @@ angular
                     break;
             }
             student.cache[event.details.generated.id] = attempt;
+            student.cache[event.details.object.id] = object;
 
             // Creating Assesment Event
             var assessmentEvent = new Caliper.Events.AssessmentEvent();
             assessmentEvent.setActor(actor);
             assessmentEvent.setAction(Caliper.Actions.AssessmentActions[event.details.action]);
-            assessmentEvent.setObject(edApp);
+            assessmentEvent.setObject(object);
             assessmentEvent.setGenerated(attempt);
             assessmentEvent.setEventTime(new Date());
 
@@ -88,8 +89,8 @@ angular
             var object = new Caliper.Entities.AssessmentItem(event.details.object.id);
             student.cache[event.details.object.id] = object;
 
-            // Attempt
-            object.setIsPartOf(student.currentAttempt);
+            // Parent Assessment
+            object.setIsPartOf(student.cache[event.details.isPartOf.id]);
 
             // Learning Objectives
             var learningObjectives = [];

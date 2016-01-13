@@ -115,6 +115,7 @@ angular
             assessmentItemEvent.setActor(actor);
             assessmentItemEvent.setObject(object);
             assessmentItemEvent.setGenerated(generated);
+            assessmentItemEvent.setEventTime(new Date());
 
             sensor.send(assessmentItemEvent);
         }
@@ -135,6 +136,7 @@ angular
             outcomeEvent.setActor(actor);
             outcomeEvent.setAction(Caliper.Actions.OutcomeActions[event.details.action]);
             outcomeEvent.setGenerated(generated);
+            outcomeEvent.setEventTime(new Date());
 
 
             if (student.cache[event.details.target.id]) {

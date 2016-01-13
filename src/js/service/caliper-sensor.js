@@ -88,6 +88,10 @@ angular
             var object = new Caliper.Entities.AssessmentItem(event.details.object.id);
             student.cache[event.details.object.id] = object;
 
+            // Attempt
+            object.setIsPartOf(student.currentAttempt);
+
+            // Learning Objectives
             var learningObjectives = [];
             event.details.learningObjective.forEach(function(lo) {
                 learningObjectives.push(new Caliper.Entities.LearningObjective(lo.id));
@@ -107,6 +111,7 @@ angular
             assessmentItemEvent.setAction(Caliper.Actions.AssessmentItemActions[event.details.action]);
             assessmentItemEvent.setActor(actor);
             assessmentItemEvent.setObject(object);
+            assessmentItemEvent.setGenerated(generated);
 
             sensor.send(assessmentItemEvent);
         }

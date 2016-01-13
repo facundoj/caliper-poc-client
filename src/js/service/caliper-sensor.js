@@ -105,8 +105,9 @@ angular
             generated.setAssignable(object);
             generated.setType(Caliper.Entities.ResponseType[event.details.generated.type]);
             generated.setAttempt(student.currentAttempt);
-            generated.setStartedAtTime(new Date());
-            generated.setEndedAtTime(new Date());
+            var startTime = new Date();
+            generated.setStartedAtTime(startTime);
+            generated.setEndedAtTime(startTime + 100);
             generated.setDuration(100);
 
             // Event

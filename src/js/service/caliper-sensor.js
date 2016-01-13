@@ -125,14 +125,18 @@ angular
             var generated = new Caliper.Entities.Result(event.details.generated.id);
             generated.setNormalScore(event.details.generated.normalScore);
             generated.setTotalScore(event.details.generated.setTotalScore);
+            generated.setActor(actor);
 
             // Event
             var outcomeEvent = new Caliper.Events.OutcomeEvent();
-            outcomeEvent.setObject(student.currentAttempt);
+            outcomeEvent.setObject(student.cache[event.details.object.id]);
             outcomeEvent.setActor(actor);
             outcomeEvent.setAction(Caliper.Actions.OutcomeActions[event.details.action]);
+            outcomeEvent.setGenerated(generated);
+
 
             if (student.cache[event.details.target.id]) {
+                generated.setAssignable(student.cache[event.details.target.id]);
                 outcomeEvent.setTarget(student.cache[event.details.target.id]);
             }
 

@@ -40,7 +40,6 @@ angular
         function trackAssessmentEvent(student, event) {
             // Object
             var object = new Caliper.Entities.Assessment(event.details.object.id);
-            object.setName(event.details.object.name);
             object.setVersion(event.details.object.version);
 
             // Actor
@@ -100,7 +99,7 @@ angular
             object.setAlignedLearningObjective(learningObjectives);
 
             // Generatable
-            var generated = new Caliper.Entities.Response(event.details.generated.id);
+            var generated = new Caliper.Entities.Response('response-' + event.details.object.id + '-' + Date.now());
             generated.setActor(actor);
             generated.setAssignable(object);
             generated.setType(Caliper.Entities.ResponseType[event.details.generated.type]);
@@ -126,7 +125,7 @@ angular
             var actor = new Caliper.Entities.Person(student.id);
 
             // Generatable
-            var generated = new Caliper.Entities.Result(event.details.generated.id);
+            var generated = new Caliper.Entities.Result('result-' + event.details.object.id + '-' + Date.now());
             generated.setNormalScore(event.details.generated.normalScore);
             generated.setTotalScore(event.details.generated.setTotalScore);
             generated.setActor(actor);

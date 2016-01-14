@@ -107,7 +107,7 @@ angular
             var startTime = new Date();
             generated.setStartedAtTime(startTime);
             generated.setEndedAtTime(new Date(startTime.getTime() + 1000));
-            generated.setDuration('P01S');
+            generated.setDuration(1000);
 
             // Event
             var assessmentItemEvent = new Caliper.Events.AssessmentItemEvent();

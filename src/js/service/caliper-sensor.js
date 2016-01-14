@@ -106,8 +106,8 @@ angular
             generated.setAttempt(student.currentAttempt);
             var startTime = new Date();
             generated.setStartedAtTime(startTime);
-            generated.setEndedAtTime(startTime + 100);
-            generated.setDuration(100);
+            generated.setEndedAtTime(new Date(startTime.getTime() + 1000));
+            generated.setDuration(1000);
 
             // Event
             var assessmentItemEvent = new Caliper.Events.AssessmentItemEvent();

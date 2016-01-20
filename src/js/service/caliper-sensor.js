@@ -13,8 +13,8 @@ angular
 
         // Pointing to Event Store
         sensor.initialize('POC-Sensor', {
-            host: 'localhost', //'10.132.11.78',
-            port: '8888', //'3001',
+            host: 'localhost',
+            port: '8888',
             path: '/message',
             withCredentials: false
         });
@@ -127,7 +127,7 @@ angular
             // Generatable
             var generated = new Caliper.Entities.Result('result-' + event.details.object.id + '-' + Date.now());
             generated.setNormalScore(event.details.generated.normalScore);
-            generated.setTotalScore(event.details.generated.setTotalScore);
+            generated.setTotalScore(event.details.generated.totalScore);
             generated.setActor(actor);
 
             // Event
@@ -138,7 +138,6 @@ angular
             outcomeEvent.setGenerated(generated);
             outcomeEvent.setEventTime(new Date());
 
-
             if (student.cache[event.details.target.id]) {
                 generated.setAssignable(student.cache[event.details.target.id]);
                 outcomeEvent.setTarget(student.cache[event.details.target.id]);
@@ -148,5 +147,4 @@ angular
 
             sensor.send(outcomeEvent);
         }
-
     });

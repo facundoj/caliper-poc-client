@@ -13,8 +13,8 @@ angular
 
         // Pointing to Event Store
         sensor.initialize('POC-Sensor', {
-            host: 'localhost',
-            port: '8888',
+            host: '10.55.18.80',
+            port: '3001',
             path: '/message',
             withCredentials: false
         });
@@ -65,6 +65,7 @@ angular
                     attempt.setEndedAtTime(new Date());
                     break;
             }
+
             student.cache[event.details.generated.id] = attempt;
             student.cache[event.details.object.id] = object;
 
@@ -122,7 +123,7 @@ angular
 
         function trackOutcomeEvent(student, event) {
             // Actor
-            var actor = new Caliper.Entities.Person(student.id);
+            var actor = new Caliper.Entities.Person(event.details.actor.id);
 
             // Generatable
             var generated = new Caliper.Entities.Result('result-' + event.details.object.id + '-' + Date.now());
@@ -130,20 +131,38 @@ angular
             generated.setTotalScore(event.details.generated.totalScore);
             generated.setActor(actor);
 
+            // Object - Attempt
+            var assessment = new Caliper.Entities.Assessment(event.details.assessment.id);
+            assessment.setVersion(event.details.assessment.version);
+
+            var attempt = new Caliper.Entities.Attempt();
+            attempt.setId(event.details.object.id);
+            attempt.setCount(event.details.object.count);
+            attempt.setStartedAtTime(new Date());
+            attempt.setEndedAtTime(new Date());
+            attempt.setAssignable(assessment);
+            attempt.setActor(actor);
+
             // Event
             var outcomeEvent = new Caliper.Events.OutcomeEvent();
-            outcomeEvent.setObject(student.cache[event.details.object.id]);
+            outcomeEvent.setObject(attempt); // Attempt
             outcomeEvent.setActor(actor);
             outcomeEvent.setAction(Caliper.Actions.OutcomeActions[event.details.action]);
             outcomeEvent.setGenerated(generated);
             outcomeEvent.setEventTime(new Date());
 
-            if (student.cache[event.details.target.id]) {
-                generated.setAssignable(student.cache[event.details.target.id]);
-                outcomeEvent.setTarget(student.cache[event.details.target.id]);
-            }
+            // Assessment Item
+            var item = new Caliper.Entities.AssessmentItem(event.details.target.id);
 
-            student.currentAttempt = null;
+            // Learning Objectives
+            var learningObjectives = [];
+            event.details.target.learningObjective.forEach(function(lo) {
+                learningObjectives.push(new Caliper.Entities.LearningObjective(lo.id));
+            });
+            item.setAlignedLearningObjective(learningObjectives);
+
+            generated.setAssignable(item);
+            outcomeEvent.setTarget(item);
 
             sensor.send(outcomeEvent);
         }

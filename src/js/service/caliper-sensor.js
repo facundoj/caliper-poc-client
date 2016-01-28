@@ -156,7 +156,7 @@ angular
 
             // Learning Objectives
             var learningObjectives = [];
-            event.details.target.learningObjective.forEach(function(lo) {
+            event.details.target.learningObjectives.forEach(function(lo) {
                 learningObjectives.push(new Caliper.Entities.LearningObjective(lo.id));
             });
             item.setAlignedLearningObjective(learningObjectives);

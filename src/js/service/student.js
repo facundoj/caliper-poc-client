@@ -135,7 +135,8 @@ Event.prototype.getAssessmentItemEventInfo = function() {
 
 Event.prototype.getOutcomeEventInfo = function() {
     return 'OutcomeEvent (' +
-        'Action: ' + this.details.action + ' - ' +
+        'Learning Objectives: ' + JSON.stringify(this.details.target.learningObjectives) + ' - ' +
+        'Student: ' + this.details.actor.id + ' - ' +
         'Score: ' + this.details.generated.normalScore + '/' + this.details.generated.totalScore +
     ')';
 };

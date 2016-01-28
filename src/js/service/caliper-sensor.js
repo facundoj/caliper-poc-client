@@ -138,8 +138,10 @@ angular
             var attempt = new Caliper.Entities.Attempt();
             attempt.setId(event.details.object.id);
             attempt.setCount(event.details.object.count);
-            attempt.setStartedAtTime(new Date());
-            attempt.setEndedAtTime(new Date());
+            var startTime = new Date();
+            attempt.setStartedAtTime(startTime);
+            attempt.setEndedAtTime(new Date(startTime.getTime() + 1000));
+            attempt.setDuration(1000);
             attempt.setAssignable(assessment);
             attempt.setActor(actor);
 
@@ -156,7 +158,7 @@ angular
 
             // Learning Objectives
             var learningObjectives = [];
-            event.details.target.learningObjective.forEach(function(lo) {
+            event.details.target.learningObjectives.forEach(function(lo) {
                 learningObjectives.push(new Caliper.Entities.LearningObjective(lo.id));
             });
             item.setAlignedLearningObjective(learningObjectives);

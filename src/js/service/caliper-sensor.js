@@ -13,7 +13,7 @@ angular
 
         // Pointing to Event Store
         sensor.initialize('POC-Sensor', {
-            host: '10.55.18.80',
+            host: '10.55.18.40',
             port: '3001',
             path: '/message',
             withCredentials: false
@@ -125,6 +125,9 @@ angular
             // Actor
             var actor = new Caliper.Entities.Person(event.details.actor.id);
 
+            // Organization (school)
+            var organization =  new Caliper.Entities.Organization(event.details.organization.id);
+
             // Generatable
             var generated = new Caliper.Entities.Result('result-' + event.details.object.id + '-' + Date.now());
             generated.setNormalScore(event.details.generated.normalScore);
@@ -149,6 +152,7 @@ angular
             var outcomeEvent = new Caliper.Events.OutcomeEvent();
             outcomeEvent.setObject(attempt); // Attempt
             outcomeEvent.setActor(actor);
+            outcomeEvent.setGroup(organization);
             outcomeEvent.setAction(Caliper.Actions.OutcomeActions[event.details.action]);
             outcomeEvent.setGenerated(generated);
             outcomeEvent.setEventTime(new Date());
@@ -165,7 +169,7 @@ angular
 
             generated.setAssignable(item);
             outcomeEvent.setTarget(item);
-
+            console.log('sending outcome event...');
             sensor.send(outcomeEvent);
         }
     });

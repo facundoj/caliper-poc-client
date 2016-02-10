@@ -20,13 +20,8 @@ angular
             return new Student();
         }
 
-        function loadEvents(student, file) {
-            console.log('Loading events:', student, file);
-            $http
-                .get('resources/' + file)
-                .then(function success(res) {
-                    student.loadEvents(res.data);
-                });
+        function loadEvents(student, feed) {
+            student.loadEvents(JSON.parse(feed));
         }
 
         function startEvents(student) {

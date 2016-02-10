@@ -16,7 +16,6 @@
         <script src="src/js/main.js"></script>
         <script src="src/js/service/student.js"></script>
         <script src="src/js/service/caliper-sensor.js"></script>
-        <script src="src/js/directive/fileread.js"></script>
 
         <style>
             .sep {
@@ -35,29 +34,14 @@
                 <div class="container students">
                     <div ng-repeat="student in vm.students" class="sep row">
 
-                        <!-- Load events -->
-                        <form ng-if="!student.isReady" class="form-inline">
-
-                            <!-- ID -->
- <!--                            <div class="form-group col-md-4">
-                                <input type="text"
-                                    ng-model="student.id"
-                                    class="form-control"
-                                    placeholder="Student ID">
-                            </div>
--->
-                            <!-- Events file -->
-                            <div class="form-group col-md-4">
-                                <label for="{{'student-file-' + $index}}">Events File</label>
-                                <input type="file" id="{{'student-file-' + $index}}" fileread="file">
-                            </div>
-
-                            <button class="btn btn-primary col-md-4" ng-click="vm.loadEvents(student, file.name)">Load</button>
-                        </form>
+                            <form ng-if="!student.isReady">
+                                <textarea class="form-control" rows="3" ng-model="feed" placeholder="Feed data (JSON format)"></textarea>
+                                <button class="form-control btn btn-primary col-md-4" ng-disabled="!feed" ng-click="vm.loadEvents(student, feed)">Load</button>
+                            </form>
 
                         <!-- Is ready -->
                         <div ng-if="student.isReady">
-                            <h3>Student: {{student.id}}</h3>
+                            <h3>Events chain:</h3>
                             <div class="panel panel-default">
                                 <div class="panel-heading">Events</div>
                                 <div class="panel-body">

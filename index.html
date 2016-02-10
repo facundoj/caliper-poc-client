@@ -29,7 +29,7 @@
         <section ng-app="pocApp">
             <div ng-controller="ctrl as vm" class="container">
                 <div class="container header">
-                    <h1>Student Emulator</h1>
+                    <h1>Outcome Events Simulator</h1>
                 </div>
 
                 <div class="container students">
@@ -39,13 +39,13 @@
                         <form ng-if="!student.isReady" class="form-inline">
 
                             <!-- ID -->
-                            <div class="form-group col-md-4">
+ <!--                            <div class="form-group col-md-4">
                                 <input type="text"
                                     ng-model="student.id"
                                     class="form-control"
                                     placeholder="Student ID">
                             </div>
-
+-->
                             <!-- Events file -->
                             <div class="form-group col-md-4">
                                 <label for="{{'student-file-' + $index}}">Events File</label>
@@ -77,7 +77,7 @@
                 </div>
 
                 <div class="container sep">
-                    <button class="btn btn-primary" ng-click="vm.addStudent()">Add student</button>
+                    <button class="btn btn-primary" ng-click="vm.addStudent()">Add events</button>
                     <button class="btn btn-success" ng-click="vm.startAll()" ng-if="vm.students.length > 0">Start All</button>
                 </div>
             </div>

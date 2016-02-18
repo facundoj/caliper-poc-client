@@ -101,12 +101,19 @@ function Event(data) {
 
             self.getInfo = self.getAssessmentItemEventInfo;
             break;
-
-        case 'OutcomeEvent':
-            self.type = 'OutcomeEvent';
+        
+        case 'AssessmentOutcomeEvent':
+            self.type = 'AssessmentOutcomeEvent';
             self.details = data.values;
 
-            self.getInfo = self.getOutcomeEventInfo;
+            self.getInfo = self.getAssessmentOutcomeEventInfo;
+            break;
+
+        case 'AssessmentItemOutcomeEvent':
+            self.type = 'AssessmentItemOutcomeEvent';
+            self.details = data.values;
+
+            self.getInfo = self.getAssessmentItemOutcomeEventInfo;
             break;
     }
 
@@ -128,7 +135,15 @@ Event.prototype.getAssessmentItemEventInfo = function() {
     ')';
 };
 
-Event.prototype.getOutcomeEventInfo = function() {
+Event.prototype.getAssessmentOutcomeEventInfo = function() {
+    return 'OutcomeEvent (' +
+        'Assessment: ' + this.details.assessment.id + ' - ' +
+        'Student: ' + this.details.actor.id + ' - ' +
+        'Score: ' + this.details.generated.normalScore + '/' + this.details.generated.totalScore +
+    ')';
+};
+
+Event.prototype.getAssessmentItemOutcomeEventInfo = function() {
     return 'OutcomeEvent (' +
         'Learning Objectives: ' + JSON.stringify(this.details.target.learningObjectives) + ' - ' +
         'Student: ' + this.details.actor.id + ' - ' +

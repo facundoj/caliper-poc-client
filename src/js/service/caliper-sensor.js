@@ -8,12 +8,13 @@ angular
             trackingMap = {
                 'AssessmentEvent': trackAssessmentEvent,
                 'AssessmentItemEvent': trackAssessmentItemEvent,
-                'OutcomeEvent': trackOutcomeEvent
+                'AssessmentOutcomeEvent': trackAssessmentOutcomeEvent,
+                'AssessmentItemOutcomeEvent': trackAssessmentItemOutcomeEvent
             };
 
         // Pointing to Event Store
         sensor.initialize('POC-Sensor', {
-            host: '10.55.18.40',
+            host: '10.55.18.95',
             port: '3001',
             path: '/message',
             withCredentials: false
@@ -120,8 +121,52 @@ angular
 
             sensor.send(assessmentItemEvent);
         }
+        
+        function trackAssessmentOutcomeEvent(student, event) {
+            // Actor
+            var actor = new Caliper.Entities.Person(event.details.actor.id);
 
-        function trackOutcomeEvent(student, event) {
+            // Organization (school)
+            var organization =  new Caliper.Entities.Organization(event.details.organization.id);
+
+            // Object - Assessment
+            var assessment = new Caliper.Entities.Assessment(event.details.assessment.id);
+            assessment.setVersion(event.details.assessment.version);
+            //Add the assessment type as an extension of an assessment
+            var typeExtension = [{type: event.details.assessment.type}];
+            assessment.setExtensions(typeExtension);
+
+            //Attempt
+            var attempt = new Caliper.Entities.Attempt();
+            attempt.setId(event.details.object.id);
+            attempt.setCount(event.details.object.count);
+            var startTime = new Date();
+            attempt.setStartedAtTime(startTime);
+            attempt.setEndedAtTime(new Date(startTime.getTime() + 1000));
+            attempt.setDuration(1000);
+            attempt.setAssignable(assessment);
+            attempt.setActor(actor);
+            
+            // Generatable
+            var generated = new Caliper.Entities.Result('result-' + event.details.object.id + '-' + Date.now());
+            generated.setNormalScore(event.details.generated.normalScore);
+            generated.setTotalScore(event.details.generated.totalScore);
+            generated.setActor(actor);
+            generated.setAssignable(assessment);
+
+            // Event
+            var outcomeEvent = new Caliper.Events.OutcomeEvent();
+            outcomeEvent.setObject(attempt); // Attempt
+            outcomeEvent.setActor(actor);
+            outcomeEvent.setGroup(organization);
+            outcomeEvent.setAction(Caliper.Actions.OutcomeActions[event.details.action]);
+            outcomeEvent.setGenerated(generated);
+            outcomeEvent.setEventTime(new Date());
+            
+            sensor.send(outcomeEvent);
+        }
+
+        function trackAssessmentItemOutcomeEvent(student, event) {
             // Actor
             var actor = new Caliper.Entities.Person(event.details.actor.id);
 
@@ -137,6 +182,10 @@ angular
             // Object - Attempt
             var assessment = new Caliper.Entities.Assessment(event.details.assessment.id);
             assessment.setVersion(event.details.assessment.version);
+            //Add the assessment type as an extension of an assessment
+            var extensions = [{type: event.details.assessment.type}];
+            assessment.setExtensions(extensions);
+            assessment.setExtensions(extensions);
 
             var attempt = new Caliper.Entities.Attempt();
             attempt.setId(event.details.object.id);
@@ -169,7 +218,7 @@ angular
 
             generated.setAssignable(item);
             outcomeEvent.setTarget(item);
-            console.log('sending outcome event...');
+            
             sensor.send(outcomeEvent);
         }
     });
